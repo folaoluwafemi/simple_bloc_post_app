@@ -1,13 +1,13 @@
 import 'package:bottom_loader/bottom_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart' as http show Client;
 import 'package:simple_post_app_bloc/src/features/post/bloc/post_bloc.dart';
 import 'package:simple_post_app_bloc/src/features/post/data/data_provider/post_data_provider.dart';
 import 'package:simple_post_app_bloc/src/features/post/data/repository/post_repository.dart';
 import 'package:simple_post_app_bloc/src/features/post/presentation/custom_widgets/custom_text.dart';
 import 'package:simple_post_app_bloc/src/features/post/presentation/custom_widgets/failure_card.dart';
 import 'package:simple_post_app_bloc/src/features/post/presentation/custom_widgets/post_card.dart';
+import 'package:simple_post_app_bloc/src/utils/constants/constants.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -17,7 +17,7 @@ class HomePage extends StatelessWidget {
     return BlocProvider<PostBloc>(
       create: (BuildContext context) => PostBloc(
         PostRepository(
-          postProvider: PostApi(client: http.Client()),
+          postProvider: PostApi(client: MockClient()),
         ),
       )..add(PostFetched()),
       child: const HomeView(),

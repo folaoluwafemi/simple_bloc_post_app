@@ -12,9 +12,12 @@ class PostRepository {
       List<PostModel> posts = await _postProvider.getPosts();
       return posts;
     }
+
     int limit = n * 10;
     int start = limit - 10;
     List<PostModel> posts = await _postProvider.getPosts(start: start);
+
     return posts;
+
   }
 }

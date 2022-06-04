@@ -7,10 +7,12 @@ import 'package:simple_post_app_bloc/src/features/post/data/data_provider/interf
 import 'package:simple_post_app_bloc/src/features/post/data/models/post_model.dart';
 import 'package:simple_post_app_bloc/src/utils/error/failure.dart';
 
-class PostApi implements PostDataProviderInterface {
+class PostApi extends PostDataProviderInterface {
   final Client _client;
 
-  PostApi({required Client client}) : _client = client;
+  PostApi({required Client client})
+      : _client = client,
+        super(client: client);
 
   static String urlHost = 'jsonplaceholder.typicode.com';
   static String urlPath = '/posts';
@@ -39,7 +41,7 @@ class PostApi implements PostDataProviderInterface {
       throw Failure('There was socket exception');
     } catch (e) {
       dev.log(e.toString());
-      return Future<String>.error(Failure(e.toString()), StackTrace.current);
+      return Future<String>.error(e, StackTrace.current);
     }
   }
 
@@ -54,9 +56,14 @@ class PostApi implements PostDataProviderInterface {
 
   @override
   Future<List<PostModel>> getPosts({int start = 0}) async {
-    Uri url = _getUri(start: '$start');
-    String rawResponseData = await _makeRequest(url);
-    List<dynamic> jsonData = jsonDecode(rawResponseData);
-    return _convertJsonToPosts(jsonData);
+    try {
+      Uri url = _getUri(start: '$start');
+      String rawResponseData = await _makeRequest(url);
+      List<dynamic> jsonData = jsonDecode(rawResponseData);
+      return _convertJsonToPosts(jsonData);
+    } catch (e) {
+      dev.log(e.toString(), stackTrace: StackTrace.current);
+      return Future.error(e, StackTrace.current);
+    }
   }
 }

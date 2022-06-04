@@ -1,23 +1,3 @@
-import 'dart:convert';
-import 'dart:typed_data';
-
-import 'package:http/http.dart' as http;
-import 'package:mockito/mockito.dart';
-
-
-class MockClient extends Mock implements http.Client {
-  @override
-  Future<http.Response> get(Uri url, {Map<String, String>? headers}) {
-    http.Response response = http.Response(
-      jsonDecode(jsonEncode(jsonPostsData)),
-      200,
-    );
-    return Future.value(response);
-  }
-}
-voidasdf(){
-}
-
 const String jsonPostsData = '''
 [
   {
